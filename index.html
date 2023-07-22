@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-2 col-sm-0"></div>
+            <div class="col-8 col-sm-12">
+                <form class="search"  method="">
+                    <h3 class="text-center text-info">News</h3>
+                    <div class="row">
+                        <div class="col-lg-2 col-md-1 col-sm-1  col-xs-0"></div>
+                        <div class="col-lg-6 col-md-6 col-sm-6  col-xs-5">
+                            <input  class="input form-control" type="text">
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+                            <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                        </div>
+                        <div class="col-lg-2 col-md-1 col-sm-1  col-xs-0"></div>
+                    </div>
+                </form>
+                <br>
+            </div>
+            <div class="col-2 col-sm-0"></div>
+        <div>
+        <div class="row">
+                    <div class="col-12 news-list">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+    <script>
+        const searchFrom =document.querySelector(".search");
+        const input = document.querySelector(".input");
+        const newsList =  document.querySelector(".news-list");
+
+        searchFrom.addEventListener("submit",retrieve);
+
+        function retrieve(e){
+            
+            e.preventDefault();
+            const apiKey = "7b443503ac9f4c24b05302fc03ce58ac";
+            let topic = input.value;
+            let url = `https://newsapi.org/v2/everything?q=${topic}&apiKey=${apiKey}`;
+
+            console.log(window.innerWidth);
+           /* fetch(url).then((res)=>{
+                
+                return res.json();
+                alert("working");
+            }).then((data)=>{
+                console.log(data);
+                
+            })
+            */
+            var xhr = new XMLHttpRequest();
+            
+            xhr.open("GET",url,true);
+            
+            xhr.onreadystatechange = function(){
+                
+                if((xhr.readyState == 4) && (xhr.status == 200))
+                {
+                    
+                    var k = JSON.parse(xhr.responseText);
+                    console.log(url);
+                    
+                    array = k.articles;
+                    var a = "";
+                    for(var i=1;i<array.length;i++){
+                        //var a =a+"<li><a href='"+k.articles[i].url+"' target='_blank'>"+k.articles[i].title+"</a></li>";
+                        var a= a+"<div class='row jumbotron'><div class='col-lg-3 col-md-12 col-sm-12 text-center'><img src='"+k.articles[i].urlToImage+"' class='img-responsive'></div><div class='col-lg-9 col-md-12 col-sm-12'><h4><a href='"+k.articles[i].url+"' target='_blank'>"+k.articles[i].title+"</a></h4><p>"+k.articles[i].description+"</p></div><hr></div><br>";
+                    }
+                    document.querySelector(".news-list").innerHTML = a;
+                }
+            }
+            xhr.send();
+            
+        }
+    </script>
+</body>
+</html>
